@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <ul>
+      <li>동기 코드: <button id="sync">0</button></li>
+      <li>태스크: <button id="macrotask">0</button></li>
+      <li>마이크로 태스크: <button id="microtask">0</button></li>
+    </ul>
+
+    <button id="macro_micro">모두 동시 실행</button>
+
+    <script>
+      const sync = document.getElementById("sync");
+      const macrotask = document.getElementById("macrotask");
+      const microtask = document.getElementById("microtask");
+      const macro_micro = document.getElementById("macro_micro");
+
+      // 동기 코드 버튼 이벤트 리스너
+      sync.addEventListener("click", function () {
+        for (let i = 0; i <= 100000; i++) {
+          sync.innerHTML = i;
+        }
+      });
+
+      // setTimeout을 사용한 매크로 태스크 실행
+      macrotask.addEventListener("click", function () {
+        for (let i = 0; i <= 100000; i++) {
+          setTimeout(() => {
+            macrotask.innerHTML = i;
+          }, 0);
+        }
+      });
+
+      // queueMicrotask를 사용한 마이크로 태스크 실행
+      microtask.addEventListener("click", function () {
+        for (let i = 0; i <= 100000; i++) {
+          queueMicrotask(() => {
+            microtask.innerHTML = i;
+          });
+        }
+      });
+
+      // 모든 태스크를 동시에 실행
+      macro_micro.addEventListener("click", function () {
+        for (let i = 0; i <= 100000; i++) {
+          sync.innerHTML = i;
+
+          setTimeout(() => {
+            macrotask.innerHTML = i;
+          }, 0);
+
+          queueMicrotask(() => {
+            microtask.innerHTML = i;
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
